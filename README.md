@@ -1,4 +1,4 @@
-# Kanbonanza
+# Kanbananza
 
 ## Course
 

@@ -1,30 +1,34 @@
 import React, { Component } from 'react';
 
+import CardAssignment from './CardAssignment';
+
 class Card extends Component {
   state = { showOptions: false };
 
   toggleOptions = () => {
-    this.setState((prevState) => {
+    this.setState(prevState => {
       return { ...prevState, showOptions: !prevState.showOptions };
     });
   };
 
-  handleChange = (event) => {
+  handleChange = event => {
     const newListId = event.target.value;
     const { card } = this.props;
 
-    this.props.onListChange(card, newListId);
+    this.props.onListChange(newListId, card);
   };
 
   render() {
     const {
       card = {},
       lists = [],
-      list = {},
-      onRemoveCard = () => {},
+      users,
+      listId,
+      onRemoveCard,
+      onAssignCard,
     } = this.props;
     const { showOptions } = this.state;
-    const removeCard = () => onRemoveCard(list, card);
+    const removeCard = () => onRemoveCard(listId, card.id);
 
     return (
       <article className="Card">
@@ -35,14 +39,19 @@ class Card extends Component {
             <select
               className="Card-move"
               onChange={this.handleChange}
-              value={list.id}
+              value={listId}
             >
-              {lists.map((list) => (
+              {lists.map(list => (
                 <option value={list.id} key={list.id}>
                   {list.title}
                 </option>
               ))}
             </select>
+            <CardAssignment
+              users={users}
+              card={card}
+              onAssignCard={onAssignCard}
+            />
             <button onClick={removeCard} className="Card-remove danger">
               Remove Card
             </button>
